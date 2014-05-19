@@ -33,8 +33,8 @@ main = do
 			else return ()
 
 showTasks :: Tasks -> String
-showTasks myTasks = do
-	unlines $ map showTask myTasks
+showTasks tasks = do
+	unlines $ map showTask tasks
 
 showTask :: Task -> String
 showTask task = (text task) ++ ", " ++ (show $ context task)
@@ -49,14 +49,14 @@ stringToContext "work" = Work
 stringToContext "shopping" = Shopping
 
 addAction :: [String] -> Tasks -> Tasks
-addAction [text] myTasks = myTasks ++ [Task text None]
+addAction [text] tasks = tasks ++ [Task text None]
 
 showAction :: [String] -> Tasks -> Tasks
-showAction [] myTasks = myTasks
+showAction [] tasks = tasks
 
 completeAction :: [String] -> Tasks -> Tasks
-completeAction [] myTasks = tail myTasks
+completeAction [] tasks = tail tasks
 
 moveAction :: [String] -> Tasks -> Tasks
-moveAction [newContextString] myTasks = let newContext = (readContext newContextString) in
-	tail myTasks ++ [(head myTasks) { context = newContext }]
+moveAction [newContextString] tasks = let newContext = (readContext newContextString) in
+	tail tasks ++ [(head tasks) { context = newContext }]
