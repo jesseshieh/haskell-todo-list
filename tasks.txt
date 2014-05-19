@@ -1,1 +1,1 @@
-Tasks {tasks = [Task {text = "task1", context = None}]}
+[Task {text = "example task", context = Home}]

@@ -4,7 +4,7 @@ import Data.Char
 data Command = Add | Move | Complete | Show deriving (Show, Read, Eq)
 data Context = None | Home | Work | Shopping deriving (Show, Read, Eq)
 data Task = Task { text :: String, context :: Context } deriving (Show, Read)
-data Tasks = Tasks { tasks :: [Task] } deriving (Show, Read)
+type Tasks = [Task] 
 
 dispatch :: [(String, [String] -> Tasks -> Tasks)]
 dispatch =  [ ("add", addAction)
@@ -34,7 +34,7 @@ main = do
 
 showTasks :: Tasks -> String
 showTasks myTasks = do
-	unlines $ map showTask (tasks myTasks)
+	unlines $ map showTask myTasks
 
 showTask :: Task -> String
 showTask task = (text task) ++ ", " ++ (show $ context task)
@@ -49,14 +49,14 @@ stringToContext "work" = Work
 stringToContext "shopping" = Shopping
 
 addAction :: [String] -> Tasks -> Tasks
-addAction [text] myTasks = Tasks $ (tasks myTasks) ++ [Task text None]
+addAction [text] myTasks = myTasks ++ [Task text None]
 
 showAction :: [String] -> Tasks -> Tasks
 showAction [] myTasks = myTasks
 
 completeAction :: [String] -> Tasks -> Tasks
-completeAction [] myTasks = Tasks $ tail (tasks myTasks)
+completeAction [] myTasks = tail myTasks
 
 moveAction :: [String] -> Tasks -> Tasks
 moveAction [newContextString] myTasks = let newContext = (readContext newContextString) in
-	Tasks $ tail (tasks myTasks) ++ [(head (tasks myTasks)) { context = newContext }]
+	tail myTasks ++ [(head myTasks) { context = newContext }]
