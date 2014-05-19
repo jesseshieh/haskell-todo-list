@@ -28,9 +28,11 @@ main = do
 	-- This line forces the entire file to be parsed so that we aren't
 	-- reading and writing to the same file simultaneously.
 	-- http://stackoverflow.com/questions/2527271/in-haskell-i-want-to-read-a-file-and-then-write-to-it-do-i-need-strictness-ann
-	if command /= "show" then
-		length tasksString `seq` (writeFile filename $ show newTasks)
-			else return ()
+	length tasksString `seq` (maybeSave command filename newTasks)
+
+maybeSave :: String -> String -> Tasks -> IO()
+maybeSave "show" _ _ = return ()
+maybeSave _ filename newTasks = writeFile filename $ show newTasks
 
 showTasks :: Tasks -> String
 showTasks tasks = unlines $ map showTask tasks
