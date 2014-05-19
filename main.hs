@@ -17,18 +17,17 @@ main = do
 	(command:args) <- getArgs
 	let (Just action) = lookup command dispatch
 
-	-- TODO: what if the file is empty or does not exist?
+	-- TODO: What if the file is empty or does not exist?
 	let filename = "tasks.txt"
 	tasksString <- readFile filename
 	let tasks = read tasksString 
 	let newTasks = action args tasks
 
+	-- This line also ensures that the file is finished reading before
+	-- the next line starts writing.
 	putStr $ showTasks newTasks
 
-	-- This line forces the entire file to be parsed so that we aren't
-	-- reading and writing to the same file simultaneously.
-	-- http://stackoverflow.com/questions/2527271/in-haskell-i-want-to-read-a-file-and-then-write-to-it-do-i-need-strictness-ann
-	length tasksString `seq` (maybeSave command filename newTasks)
+	maybeSave command filename newTasks
 
 maybeSave :: String -> String -> Tasks -> IO()
 maybeSave "show" _ _ = return ()
