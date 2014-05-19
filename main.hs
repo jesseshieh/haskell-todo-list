@@ -1,9 +1,3 @@
--- Example usage
--- ghc --make main && ./main Add "new task"
--- ghc --make main && ./main Add "new task"
--- ghc --make main && ./main Add "new task"
--- ghc --make main && ./main Add "new task"
--- Jesse Shieh <jesse.shieh.pub@gmail.com>
 import System.Environment
 import Data.Char
 
