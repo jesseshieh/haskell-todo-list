@@ -69,6 +69,6 @@ completeHeadTask :: Tasks -> Tasks
 completeHeadTask myTasks = Tasks $ tail $ tasks myTasks
 
 moveHeadTask :: Context -> Tasks -> Tasks
-moveHeadTask context myTasks = Tasks $ (tail $ tasks myTasks) ++ [
-	let myTask = head $ tasks myTasks 
-		in Task (text myTask) context]
+moveHeadTask newContext myTasks = Tasks $ (tail $ tasks myTasks) ++ [
+	let myTask = head $ tasks myTasks in
+		myTask { context = newContext }]
