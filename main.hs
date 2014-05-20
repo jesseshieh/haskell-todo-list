@@ -24,18 +24,11 @@ main = do
 	let filename = "tasks.txt"
 	tasksString <- readFile filename
 	let tasks = read tasksString 
+
 	let newTasks = action args tasks
 
-	-- This line also ensures that the file is finished reading before
-	-- the next line starts writing.
 	putStr $ showTasks newTasks
-
-	maybeSave command filename newTasks
-
--- Saves the tasks to a file unless the command was "show".
-maybeSave :: String -> String -> Tasks -> IO()
-maybeSave "show" _ _ = return ()
-maybeSave _ filename newTasks = writeFile filename $ show newTasks
+	writeFile filename $ show newTasks
 
 -- Converts the tasks into a string ready for printing to the screen.
 showTasks :: Tasks -> String
