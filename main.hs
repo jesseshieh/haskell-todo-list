@@ -1,3 +1,5 @@
+import System.IO
+import System.Directory
 import System.Environment
 import Data.Char
 
@@ -20,15 +22,23 @@ main = do
 	(command:args) <- getArgs
 	let (Just action) = lookup command dispatch
 
-	-- TODO: What if the file is empty or does not exist?
 	let filename = "tasks.txt"
-	tasksString <- readFile filename
+	tasksString <- readListFromFile filename
 	let tasks = read tasksString 
 
 	let newTasks = action args tasks
 
 	putStr $ showTasks newTasks
 	writeFile filename $ show newTasks
+
+-- Reads in the contents of a file. If the file doesn't exist
+-- it returns an empty list string.
+readListFromFile :: FilePath -> IO(String)
+readListFromFile filename = do
+	fileExists <- doesFileExist filename
+	case fileExists of
+		True -> readFile filename
+		False -> return "[]"
 
 -- Converts the tasks into a string ready for printing to the screen.
 showTasks :: Tasks -> String
