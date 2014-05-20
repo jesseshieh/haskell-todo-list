@@ -1,6 +1,7 @@
 import System.IO
 import System.Directory
 import System.Environment
+import Data.List
 import Data.Char
 
 -- Defines the data types we will use.
@@ -42,7 +43,16 @@ readListFromFile filename = do
 
 -- Converts the tasks into a string ready for printing to the screen.
 showTasks :: Tasks -> String
-showTasks tasks = unlines $ map showTask tasks
+showTasks tasks = unlines $ (map join2Tuple (zip intStrings (map showTask tasks)))
+
+-- Infinite list of numbers as strings.
+intStrings :: [String]
+intStrings = map show [0..]
+
+-- Joins a list with indexes.
+-- Concatenates a 2-tuple together with a colon inbetween.
+join2Tuple :: (String, String) -> String
+join2Tuple (x, y) = x ++ ". " ++ y
 
 -- Converts the task into a string ready for printing to the screen.
 showTask :: Task -> String
